@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Рефлексия урока</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background: #f9f9f9;
+    }
+    h2 {
+      color: #333;
+    }
+    label {
+      display: block;
+      margin: 12px 0 5px;
+      font-weight: bold;
+    }
+    textarea, select, input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .checkbox-group label {
+      font-weight: normal;
+      display: block;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h2>Рефлексия по уроку</h2>
+  <form id="reflectionForm">
+    <label for="fio">ФИО ученика:</label>
+    <input type="text" id="fio" name="fio" required>
+
+    <label for="topic">Тема урока:</label>
+    <input type="text" id="topic" name="topic" required>
+
+    <label for="q1">1. Что на уроке было самым понятным, а что осталось туманным? ✍️</label>
+    <textarea id="q1" name="q1" required></textarea>
+
+    <label for="q2">2. На каком моменте урока ты залип? 🧐</label>
+    <textarea id="q2" name="q2" required></textarea>
+
+    <label for="q3">3. Оцени урок по шкале от 1 до 5 ⭐</label>
+    <select id="q3" name="q3" required>
+      <option value="">--Выбери--</option>
+      <option value="1">1 - совсем не понял</option>
+      <option value="2">2</option>
+      <option value="3">3 - нормально</option>
+      <option value="4">4</option>
+      <option value="5">5 - супер!</option>
+    </select>
+
+    <label for="q4">4. С каким настроением уходишь? 😊😐😢🤩</label>
+    <select id="q4" name="q4" required>
+      <option value="">--Выбери смайлик--</option>
+      <option value="😊">😊 Радость</option>
+      <option value="😐">😐 Спокойствие</option>
+      <option value="😢">😢 Грусть</option>
+      <option value="🤩">🤩 Восторг</option>
+    </select>
+
+    <label>5. Что можно улучшить в уроке? (можно выбрать несколько вариантов)</label>
+    <div class="checkbox-group">
+      <label><input type="checkbox" name="q5" value="Больше примеров"> Больше примеров</label>
+      <label><input type="checkbox" name="q5" value="Интерактив"> Интерактив</label>
+      <label><input type="checkbox" name="q5" value="Темп помедленнее"> Темп помедленнее</label>
+      <label><input type="checkbox" name="q5" value="Темп побыстрее"> Темп побыстрее</label>
+      <label><input type="checkbox" name="q5" value="Больше картинок/видео"> Больше картинок/видео</label>
+    </div>
+
+    <button type="submit">Отправить</button>
+  </form>
+
+  <script>
+    const form = document.getElementById("reflectionForm");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const data = {
+        fio: document.getElementById("fio").value,
+        topic: document.getElementById("topic").value,
+        q1: document.getElementById("q1").value,
+        q2: document.getElementById("q2").value,
+        q3: document.getElementById("q3").value,
+        q4: document.getElementById("q4").value,
+        q5: Array.from(document.querySelectorAll('input[name="q5"]:checked')).map(el => el.value)
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbwELGti1O-UzG5fhGf0IYJY-wZ1wzYmxGO4aGgi9WpzwO0Wr_SjGIc-68MHY72kUmJ7rA/exec", {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(res => res.text())
+      .then(res => {
+        alert("✅ Ответ сохранён в таблице!");
+        form.reset();
+      })
+      .catch(err => {
+        alert("❌ Ошибка отправки: " + err);
+      });
+    });
+  </script>
+</body>
+</html>
